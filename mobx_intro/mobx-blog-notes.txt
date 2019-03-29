@@ -16,6 +16,9 @@ Mobx basics:
   Reactions:
     These are the operations (mostly I/O) that we want to happen on some state change. 
     Like fetching search results as user types in the search field 
+  Actions: Actions are all the things that alter the state.
+    Like doing a item push into array, or changing a item property. These are implicit actions,
+    in mobx we can have explicit actions by adding @action decorator to any of store method 
   
 (Note: We will be only covering state and derivates in this blog post)
 
