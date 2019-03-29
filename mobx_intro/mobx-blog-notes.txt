@@ -3,3 +3,24 @@ Want to create a Restrautent menu with these actions
  ii.Remove from Order
  iii. Increment Added Item Quantity
  iv. Decrement Added Item Quantity
+
+Mobx basics:
+  Mobx has concept of stores. A store contains a subset of application state, its drivates
+  actions, and reactions.
+  State:
+    This is the application state, Graph of object, arrays, primitives, references that
+    forms the model of your application.
+  Derivates: 
+    It is any value that can be computed automativily from application state.
+    Like total price of an order.
+  Reactions:
+    These are the operations (mostly I/O) that we want to happen on some state change. 
+    Like fetching search results as user types in the search field 
+  
+(Note: We will be only covering state and derivates in this blog post)
+
+
+(Code Example here)
+
+@observable signal Mobx that these values can change over time.
+@computed signle Mobx that it is a computation and can be derived from state.
