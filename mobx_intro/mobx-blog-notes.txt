@@ -9,7 +9,7 @@ Mobx basics:
   actions, and reactions.
   State:
     This is the application state, Graph of object, arrays, primitives, references that
-    forms the model of your application.
+    forms the model of your application. Like list of menu items
   Derivates: 
     It is any value that can be computed automativily from application state.
     Like total price of an order.
@@ -20,10 +20,17 @@ Mobx basics:
     Like doing a item push into array, or changing a item property. These are implicit actions,
     in mobx we can have explicit actions by adding @action decorator to any of store method 
   
-(Note: We will be only covering state and derivates in this blog post)
+(Note: We will be only covering state, derivates and implicit actions in this blog post)
 
 
 (Code Example here)
 
 @observable signal Mobx that these values can change over time.
 @computed signle Mobx that it is a computation and can be derived from state.
+
+Now to connect mobx store with React component,
+
+(Code Example here)
+
+We created a instant of store and provided to MenuList component as props.
+And decorated
