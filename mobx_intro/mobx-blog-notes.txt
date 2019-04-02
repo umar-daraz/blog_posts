@@ -28,9 +28,31 @@ Mobx basics:
 @observable signal Mobx that these values can change over time.
 @computed signle Mobx that it is a computation and can be derived from state.
 
+Now the total property could be drived automatically from the menu list. 
+
 Now to connect mobx store with React component,
 
 (Code Example here)
 
-We created a instant of store and provided to MenuList component as props.
-And decorated
+We created a instant of store and provided to MenuList component as prop.
+And decorated MenuList component with @observer decorator from mobx-react package.
+That is pretty much it in terms of making our react component  connect to mobx store.
+
+Now if increment quantity by changing in place it update the store and all the derived states like totalOrder computation.
+Also as we if select or de select a item totalOrder computation runs automatically.
+
+This automatic running of computations and reaction(We may come to reaction's in another post) is the main advantage to mobx.
+Mobx reactivity sync app state, action, reaction and derived state in a declarative way. 
+
+Difference form Redux:
+
+1. Low learning curve. 
+  Mobx has less concepts to rape our heads around. There is a store and state and methods on store. It look similar
+  to OOP class with data and the methods to operate on the data.
+  Specially for people with OOP background mobx concepts sound familiar.
+  There is a concept of reactivity, but it just work out of the box and we can get started with mobx without completely
+  understanding reactivity at first.
+2. Less boiler plate.
+  The problem of Redux boilerplate is well documented. There is some advice on official Redux document (https://redux.js.org/recipes/reducing-boilerplate) to reduce it.
+  But we have to strictly follow some document to 
+3.     
