@@ -1,29 +1,40 @@
-Want to create a Restrautent menu with these actions
- i. Add to Order
- ii.Remove from Order
- iii. Increment Added Item Quantity
- iv. Decrement Added Item Quantity
+#Example:
+We will be create a simple restrautent menu with these actions     
 
-Mobx basics:
-  Mobx has concept of stores. A store contains a subset of application state, its drivates
-  actions, and reactions.
-  State:
-    This is the application state, Graph of object, arrays, primitives, references that
-    forms the model of your application. Like list of menu items
-  Derivates: 
-    It is any value that can be computed automativily from application state.
-    Like total price of an order.
-  Reactions:
-    These are the operations (mostly I/O) that we want to happen on some state change. 
-    Like fetching search results as user types in the search field 
-  Actions: Actions are all the things that alter the state.
-    Like doing a item push into array, or changing a item property. These are implicit actions,
-    in mobx we can have explicit actions by adding @action decorator to any of store method 
+- Add to Order
+- Remove from Order
+- Increment Added Item Quantity
+- Decrement Added Item Quantity
+
+#Mobx basics:
+Mobx has concept of stores. A store contains a subset of application state, its drivates actions, and reactions.
+###State:
+This is the application state, Graph of object, arrays, primitives, references that forms the model of your application. Like list of menu items
+###Derivates: 
+It is any value that can be computed automativily from application state, like total price of an order.
+###Reactions:
+These are the operations (mostly I/O) that we want to happen on some state change. 
+Like fetching search results as user types in the search field 
+###Actions: 
+Actions are all the things that alter the state.
+Like doing a item push into array, or changing a item property. These are implicit actions,
+in mobx we can have explicit actions by adding @action decorator to any of store method 
   
 (Note: We will be only covering state, derivates and implicit actions in this blog post)
 
-
-(Code Example here)
+    class MenuListStore {
+        @observable menuList = menuData;
+        @computed
+        get orderItems() {
+            return this.menuList.filter(item => item.selected);
+        }
+        @computed
+        get orderTotal() {
+            return this.orderItems.reduce(
+                (total, item) => total + item.quantity * item.price,
+            0);
+        }
+    }
 
 @observable signal Mobx that these values can change over time.
 @computed signle Mobx that it is a computation and can be derived from state.
@@ -32,7 +43,28 @@ Now the total property could be drived automatically from the menu list.
 
 Now to connect mobx store with React component,
 
-(Code Example here)
+    @observer
+    class MenuList extends React.Component {
+        render() {
+            const { store } = this.props;
+            return (
+                <div className="menu-list-container">
+                    <div className="header-row">
+                        <span className="col">Add</span>
+                        <span className="col meal-col">Title</span>
+                        <span className="col">Price</span>
+                        <span className="col">Quantity</span>
+                    </div>
+                    <div className="rows">
+                        {store.menuList.map(item => (
+                            <MenuListItem key={item.id} menuItem={item} />
+                        ))}
+                    </div>
+                        <h1>Order Total: {store.orderTotal} Rs</h1>
+                </div>
+            );
+        }
+    }
 
 We created a instant of store and provided to MenuList component as prop.
 And decorated MenuList component with @observer decorator from mobx-react package.
@@ -44,15 +76,20 @@ Also as we if select or de select a item totalOrder computation runs automatical
 This automatic running of computations and reaction(We may come to reaction's in another post) is the main advantage to mobx.
 Mobx reactivity sync app state, action, reaction and derived state in a declarative way. 
 
-Difference form Redux:
+Difference form Redux:-
 
 1. Low learning curve. 
-  Mobx has less concepts to rape our heads around. There is a store and state and methods on store. It look similar
-  to OOP class with data and the methods to operate on the data.
-  Specially for people with OOP background mobx concepts sound familiar.
-  There is a concept of reactivity, but it just work out of the box and we can get started with mobx without completely
-  understanding reactivity at first.
+    Mobx has less concepts to rape our heads around. There is a store and state and methods on store. It look similar
+      to OOP class with data and the methods to operate on the data.
+    Specially for people with OOP background mobx concepts sound familiar.
+    There is a concept of reactivity, but it just work out of the box and we can get started with mobx without completely
+    understanding reactivity at first.
 2. Less boiler plate.
-  The problem of Redux boilerplate is well documented. There is some advice on official Redux document (https://redux.js.org/recipes/reducing-boilerplate) to reduce it.
-  But we have to strictly follow some document to 
-3.     
+    Creating a action is matter of defining a method on store class, reactive state is created by decorating class property with @observable decorator.  
+    The problem of Redux boilerplate is well documented. There is some advice on official Redux document (https://redux.js.org/recipes/reducing-boilerplate) to reduce it.
+    But we have to strictly follow some rules or introduce a library to make this happen, again by going that it contribute to step learning curve. 
+3. Being friends with Mutability again.
+   
+  Immutability is the concept that is difficult to unterstand completely for beginners and people with OOP background. It is also the source of alot of boiler plate just
+  to make   
+     
