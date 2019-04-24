@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      .menu-list-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        min-width: 600px;
+      }
+      .menu-list-container > h1 {
+        border-bottom: 2px solid green;
+      }
+      .header-row {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 5px;
+      }
+      .header-row > .col {
+        border-right: 1px solid green;
+        padding: 5px 5px;
+        width: 20%;
+      }
+      .header-row > .col:last-child {
+        border-right: 0;
+      }
+      .header-row > .meal-col {
+        width: 40%;
+      }
+      .rows {
+        width: 100%;
+        border-top: 2px solid green;
+        border-right: 2px solid green;
+        border-left: 2px solid green;
+      }
+
+      .row {
+        display: flex;
+        border-bottom: 2px solid green;
+      }
+
+      .row > .col {
+        border-right: 1px solid green;
+        padding: 5px 5px;
+        width: 20%;
+      }
+      .row > .col:last-child {
+        border-right: 0;
+      }
+      .row > .meal-col {
+        width: 40%;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@babel/plugin-proposal-decorators@7.1.0/lib/transformer-legacy.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class MenuListStore {
+        @observable menuList = [];
+        addToOrder(itemId) {
+          const menuItem = this.menuList.find(item => item.id === itemId);
+          menuItem.selected = true;
+        }
+
+        @computed get orderTotal() {
+          return this.menuList.reduce(
+            (total, item) => total + item.quantity * item.price,
+            0,
+          );
+        }
+      }
+
+      const menuData = [
+        {id: 1, quantity: 1, title: 'Naan Kabab', price: 7.0},
+        {id: 2, quantity: 4, title: 'Haleem', price: 8},
+        {id: 3, quantity: 7, title: 'Karahi', price: 3},
+      ];
+      const MenuListItem = ({
+        title,
+        quantity,
+        price,
+        onDecrement,
+        onIncrement,
+      }) => {
+        return (
+          <div className="row">
+            <span className="col">
+              <input type="checkbox" />
+            </span>
+            <span className="col meal-col">{title}</span>
+            <span className="col">{price}</span>
+            <span className="col">
+              <button>+</button>
+              {quantity}
+              <button>-</button>
+            </span>
+          </div>
+        );
+      };
+      class MenuList extends React.Component {
+        render() {
+          return (
+            <div className="menu-list-container">
+              <div className="header-row">
+                <span className="col">Add</span>
+                <span className="col meal-col">Title</span>
+                <span className="col">Price</span>
+                <span className="col">Quantity</span>
+              </div>
+              <div className="rows">
+                {menuData.map(item => (
+                  <MenuListItem key={item.id} {...item} />
+                ))}
+              </div>
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.render(<MenuList />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
